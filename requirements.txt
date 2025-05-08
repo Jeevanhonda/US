@@ -6,6 +6,6 @@ streamlit-lottie
 requests
 scikit-learn
 openpyxl
-
+pymongo
 
 
