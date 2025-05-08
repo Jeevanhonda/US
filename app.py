@@ -1,156 +1,32 @@
 import streamlit as st
-import math_grade4_line
-import math_grade4_bar
-import math_grade4_area
-import math_grade4_female_line
-import math_grade4_female_bar
-import math_grade4_female_area
-import math_grade4_overall_line
-import math_grade4_overall_bar
-import math_grade4_statewise_line
-import math_grade4_statewise_area
-import math_grade4_statewise_bar
-import math_grade4_statewise_male_vs_female
-import math_grade8_area
-import math_grade8_bar
-import math_grade8_line
-import math_grade8_female_area
-import math_grade8_female_bar
-import math_grade8_female_line
-import math_grade8_statewise_area
-import math_grade8_statewise_bar
-import math_grade8_statewise_line
-import math_grade8_overall_bar
-import math_grade8_overall_line
-import reading_grade4_line
-import reading_grade4_bar
-import reading_grade4_area
-import reading_grade4_female_line
-import reading_grade4_female_bar
-import reading_grade4_female_area
-import reading_grade4_overall_line
-import reading_grade4_overall_bar
-import reading_grade4_statewise_line
-import reading_grade4_statewise_area
-import reading_grade4_statewise_bar
-import reading_grade8_area
-import reading_grade8_bar
-import reading_grade8_line
-import reading_grade8_female_area
-import reading_grade8_female_bar
-import reading_grade8_female_line
-import reading_grade8_statewise_area
-import reading_grade8_statewise_bar
-import reading_grade8_statewise_line
-import reading_grade8_overall_bar
-import reading_grade8_overall_line
-import math_grade8_statewise_male_vs_female
-import reading_grade4_statewise_male_vs_female
-import reading_grade8_statewise_male_vs_female
+import pymongo
+import pandas as pd
 
-# Set page layout to wide
-st.set_page_config(layout="wide")
+# MongoDB connection
+conn = pymongo.MongoClient("mongodb://jeevanhonda:Vignesh_3@ac-s8itqus-shard-00-00.ogrtcr1.mongodb.net:27017,ac-s8itqus-shard-00-01.ogrtcr1.mongodb.net:27017,ac-s8itqus-shard-00-02.ogrtcr1.mongodb.net:27017/?ssl=true&replicaSet=atlas-iwwj88-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0")
+conn_obj = conn["jeevan"]
+branch = conn_obj["branch"]
 
-# Read query params
-params = st.query_params
-page = params.get("page", "")  # Default to home if no query param
+# Fetch existing branches
+branches = list(branch.find({}, {"_id": 0}))
+df = pd.DataFrame(branches)
+df.index = range(1, len(df) + 1)
 
-# Page Navigation
-if page == "math_grade4_line":
-    math_grade4_line.show()
-elif page == "math_grade4_bar":
-    math_grade4_bar.show()
-elif page == "math_grade4_area":
-    math_grade4_area.show()
-elif page == "math_grade4_female_line":
-    math_grade4_female_line.show()
-elif page == "math_grade4_female_bar":
-    math_grade4_female_bar.show()
-elif page == "math_grade4_female_area":
-    math_grade4_female_area.show()
-elif page == "math_grade4_overall_line":
-    math_grade4_overall_line.show()
-elif page == "math_grade4_overall_bar":
-    math_grade4_overall_bar.show()
-elif page == "math_grade4_statewise_line":
-    math_grade4_statewise_line.show()
-elif page == "math_grade4_statewise_area":
-    math_grade4_statewise_area.show()
-elif page == "math_grade4_statewise_bar":
-    math_grade4_statewise_bar.show()
-elif page == "math_grade8_area":
-    math_grade8_area.show()
-elif page == "math_grade8_bar":
-    math_grade8_bar.show()
-elif page == "math_grade8_line":
-    math_grade8_line.show()
-elif page == "math_grade8_female_area":
-    math_grade8_female_area.show()
-elif page == "math_grade8_female_bar":
-    math_grade8_female_bar.show()
-elif page == "math_grade8_female_line":
-    math_grade8_female_line.show()
-elif page == "math_grade8_statewise_area":
-    math_grade8_statewise_area.show()
-elif page == "math_grade8_statewise_bar":
-    math_grade8_statewise_bar.show()
-elif page == "math_grade8_statewise_line":
-    math_grade8_statewise_line.show()
-elif page == "math_grade8_overall_bar":
-    math_grade8_overall_bar.show()
-elif page == "math_grade8_overall_line":
-    math_grade8_overall_line.show()
-elif page == "reading_grade4_line":
-    reading_grade4_line.show()
-elif page == "reading_grade4_bar":
-    reading_grade4_bar.show()
-elif page == "reading_grade4_area":
-    reading_grade4_area.show()
-elif page == "reading_grade4_female_line":
-    reading_grade4_female_line.show()
-elif page == "reading_grade4_female_bar":
-    reading_grade4_female_bar.show()
-elif page == "reading_grade4_female_area":
-    reading_grade4_female_area.show()
-elif page == "reading_grade4_overall_line":
-    reading_grade4_overall_line.show()
-elif page == "reading_grade4_overall_bar":
-    reading_grade4_overall_bar.show()
-elif page == "reading_grade4_statewise_line":
-    reading_grade4_statewise_line.show()
-elif page == "reading_grade4_statewise_area":
-    reading_grade4_statewise_area.show()
-elif page == "reading_grade4_statewise_bar":
-    reading_grade4_statewise_bar.show()
-elif page == "reading_grade8_area":
-    reading_grade8_area.show()
-elif page == "reading_grade8_bar":
-    reading_grade8_bar.show()
-elif page == "reading_grade8_line":
-    reading_grade8_line.show()
-elif page == "reading_grade8_female_area":
-    reading_grade8_female_area.show()
-elif page == "reading_grade8_female_bar":
-    reading_grade8_female_bar.show()
-elif page == "reading_grade8_female_line":
-    reading_grade8_female_line.show()
-elif page == "reading_grade8_statewise_area":
-    reading_grade8_statewise_area.show()
-elif page == "reading_grade8_statewise_bar":
-    reading_grade8_statewise_bar.show()
-elif page == "reading_grade8_statewise_line":
-    reading_grade8_statewise_line.show()
-elif page == "reading_grade8_overall_bar":
-    reading_grade8_overall_bar.show()
-elif page == "reading_grade8_overall_line":
-    reading_grade8_overall_line.show()
-elif page == "math_grade4_statewise_male_vs_female":
-    math_grade4_statewise_male_vs_female.show()
-elif page == "math_grade8_statewise_male_vs_female":
-    math_grade8_statewise_male_vs_female.show()
-elif page == "reading_grade4_statewise_male_vs_female":
-    reading_grade4_statewise_male_vs_female.show()
-elif page == "reading_grade8_statewise_male_vs_female":
-    reading_grade8_statewise_male_vs_female.show()
-else:
-    st.write("Welcome to the Math Grade 4 Dashboard! Select a page from the sidebar.")
+# Input and save logic
+branch_name = st.text_input("Enter the Branch Name :")
+if st.button("Save Branch"):
+    existing_names = df["Branch_Name"].tolist()  # Convert to list
+    if branch_name:
+        if branch_name not in existing_names:
+            branch.insert_one({"Branch_Name": branch_name})
+            st.success("Branch saved!")
+            st.rerun()
+        else:
+            st.warning("The branch already exists.")
+    else:
+        st.error("Please enter a branch name.")
+
+# Show saved branches
+st.subheader("Saved Branches:")
+
+st.write(df)
