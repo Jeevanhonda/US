@@ -45,8 +45,8 @@ if st.button("Generate Quotation"):
     # PDF generation
     class PDF(FPDF):
         def header(self):
-            logo_path_left = r"G:\jeevan\images.png"  # Update the path to your logo file (Left)
-            logo_path_right = r"G:\jeevan\images.png"  # Update the path to your logo file (Right)
+            logo_path_left = r"images.png"  # Update the path to your logo file (Left)
+            logo_path_right = r"images.png"  # Update the path to your logo file (Right)
             
             # Left logo
             self.image(logo_path_left, 10, 8, 33)  # Position and size of the left logo (x, y, width)
