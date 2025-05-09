@@ -102,7 +102,7 @@ if st.button("Generate Quotation"):
                 "Address": address,
                 "Status": "Not Sale",
                 "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
-                "Sales_person": selected_staff
+                
             }
             cust.update_one({"Phone_no": phone_number}, {"$set": update_fields})
             st.success("Customer Detail Has Been Updated Successfully")
