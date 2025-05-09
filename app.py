@@ -154,8 +154,8 @@ if st.button("Generate Quotation"):
 
             # Footer note
             self.set_xy(x + 2, y + h - 6)
-            self.set_font("Arial", 'I', 10)
-            self.cell(0, 5, "Note: Please bring this copy next time you visit our showroom", ln=True)
+            self.set_font("Arial", 'I', 15)
+            self.cell(0, 5, "Note: Please bring this copy next time you visit our showroom", ln=True,align="C")
 
             
 
