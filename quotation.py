@@ -180,7 +180,7 @@ def app(name=None, add=None):
 
         pdf.ln(10)
         pdf.set_font("Arial", 'B', 20)
-        pdf.cell(0, 10, "Quotation Details", ln=True, align="C")
+        pdf.cell(0, 10, "Proforma Invoice", ln=True, align="C")
         pdf.cell(0, 10, f"Bike Model: {selected_bike}", ln=True, align="C")
 
         pdf.set_x(13)
@@ -195,7 +195,7 @@ def app(name=None, add=None):
         pdf.cell(90, 10, f"Rs {insurance:.2f}", border=1, ln=True, align="R")
 
         pdf.set_x(13)
-        pdf.cell(90, 10, "Registration Charges", border=1)
+        pdf.cell(90, 10, "Registration ", border=1)
         pdf.cell(90, 10, f"Rs {registration:.2f}", border=1, ln=True, align="R")
 
         pdf.set_x(13)
