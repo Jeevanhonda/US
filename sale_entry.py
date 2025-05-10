@@ -16,6 +16,7 @@ def app(name=None):
     df_cust = pd.DataFrame(list(cust.find({}, {"_id": 0})))
     df_cust = df_cust.drop_duplicates()
     df_cust.index = range(1, len(df_cust) + 1)
+    df_cust=df_cust[df_cust["Status"]=="Not Sale"]
     #st.write(df_cust)
     if namee==None:
         pass
