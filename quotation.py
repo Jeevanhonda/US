@@ -56,6 +56,13 @@ def app(name=None,add=None):
         submitted = st.form_submit_button("Generate Quotation")
 
     if submitted:
+        if phone_number:
+            if len(phone_number) == 10 and phone_number.isdigit():
+                st.success("Valid phone number entered.")
+            else:
+                st.error("Please enter a valid 10-digit phone number.")
+        else:
+            st.warning("Phone number cannot be empty.")
         selected_staff_phone = df_staff[df_staff["Sales_Person"] == selected_staff]["Phone_Number"].iloc[0]
         df_cust = pd.DataFrame(list(cust.find({}, {"_id": 0})))
         bike_row = df_bike[df_bike["Bike_Model"] == selected_bike].iloc[0]
