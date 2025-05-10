@@ -7,9 +7,13 @@ st.set_page_config(page_title="Jeevan Honda", layout="wide")
 # Dummy login data
 valid_users = {
     "admin": "admin123",
-    "revathi" : "revathi0452",
-    "usha" : "usha2025",
-    "pavithra_j":"pavithra2026"
+    "ho" : "hovusp_2025",
+    "kmr" : "kmrah_2025",
+    "tnr":"tnrk_2025",
+    "nmp":"nmpm_2025",
+    "ckm":"ckmn_2025",
+    "tmg":"tmgspv_2025",
+    "klk":"klkk_2025"
 }
 
 # Session state init
@@ -30,12 +34,22 @@ if st.session_state.logged_in:
     st.sidebar.button("🚪 Logout", on_click=logout)
     if st.session_state.username=="admin":
         admin.app()  # Show the page manager
-    if st.session_state.username=="revathi":
-        person.app(name="Santhana Revathi")
-    if st.session_state.username=="usha":
-        person.app(name="Usha")
-    if st.session_state.username=="pavithra_j":
-        person.app(name="Pavithra J")
+    if st.session_state.username=="ho":
+        person.app(name=["Santhana Revathi","Usha","Pavithra J","Muthukumar M"])
+    if st.session_state.username=="kmr":
+        person.app(name=["Harini"])
+    if st.session_state.username=="tnr":
+        person.app(name=["Karthikeyan G"])
+    if st.session_state.username=="nmp":
+        person.app(name=["Manoj"])
+    if st.session_state.username=="ckm":
+        person.app(name=["Nivageetha"])
+    if st.session_state.username=="tmg":
+        person.app(name=["Sundari","Pavithra S","Vinothini"])
+    if st.session_state.username=="klk":
+        person.app(name=["Kannan Prabhu"])
+    
+
         
 else:
     # Login UI

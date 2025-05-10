@@ -50,7 +50,7 @@ def app(name=None):
             if namee==None:
                 selected_staff = st.selectbox("Salesperson:", df_staff["Sales_Person"].unique())
             else:
-                selected_staff = st.selectbox("Salesperson:", [namee])
+                selected_staff = st.selectbox("Salesperson:", namee)
         
         submitted = st.form_submit_button("Generate Quotation")
 

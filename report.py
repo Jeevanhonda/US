@@ -3,7 +3,7 @@ import pymongo
 import pandas as pd
 from datetime import datetime
 def app(name=None):
-    name=name
+    namee=name
     st.write(f"Wel {name}")
     # ---- MongoDB connection ----
     conn = pymongo.MongoClient(
@@ -26,7 +26,7 @@ def app(name=None):
     if name==None:
         staff_name = st.sidebar.selectbox("Select the Staff Name:", df_cust["Sales_person"].dropna().unique())
     else:
-        staff_name = st.sidebar.selectbox("Select the Staff Name:", [name])
+        staff_name = st.sidebar.selectbox("Select the Staff Name:", namee)
     status=st.sidebar.selectbox("Select Any One Of this Status",["Not Sale","Sale"])
     st_date = st.sidebar.date_input("Select Start Date")
     en_date = st.sidebar.date_input("Select End Date")

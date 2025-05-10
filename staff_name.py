@@ -48,7 +48,7 @@ def app():
             }
             staff_name.insert_one(new_staff)
             st.success("✅ Staff member added successfully.")
-            st.experimental_rerun()
+            st.rerun()
 
     # ---- Show Existing Staff ----
     st.markdown("---")

@@ -20,7 +20,7 @@ def app(name=None):
     if namee==None:
         pass
     else:
-        df_cust=df_cust[df_cust["Sales_person"] == namee]
+         df_cust = df_cust[df_cust["Sales_person"].isin(namee)]
 
     # ---- Customer Selection ----
     st.subheader("🔍 Select a Customer")
