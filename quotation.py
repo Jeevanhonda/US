@@ -6,12 +6,8 @@ from io import BytesIO
 import base64
 from datetime import date, datetime
 
-def app(name=None,add=None):
-    namee=name
-    add=add
-        
-    # Streamlit Page Config
-    
+def app(name=None, add=None):
+    namee = name
 
     # MongoDB connection
     conn = pymongo.MongoClient(
@@ -26,14 +22,13 @@ def app(name=None,add=None):
 
     df_staff = pd.DataFrame(list(staff_name.find({}, {"_id": 0})))
     df_bike = pd.DataFrame(list(bike.find({}, {"_id": 0})))
-
     current_date = date.today()
 
-    # UI Title
+    # Title and Date
     st.title("🏍️ Bike Quotation Generator")
     st.markdown(f"**Date:** {current_date.strftime('%B %d, %Y')}")
 
-    # Form layout
+    # Form for input
     with st.form("quotation_form"):
         st.subheader("🔹 Customer Details")
         col1, col2 = st.columns(2)
@@ -41,31 +36,32 @@ def app(name=None,add=None):
             customer_name = st.text_input("Customer Name:", placeholder="Enter full name")
             phone_number = st.text_input("Phone Number:", placeholder="10-digit mobile number")
         with col2:
-            address = st.text_area("Address:", placeholder="Enter complete address including area and pincode")
-        
+            address = st.text_area("Address:", placeholder="Enter complete address")
+
         st.subheader("🔹 Bike and Sales Info")
         col3, col4 = st.columns(2)
         with col3:
             selected_bike = st.selectbox("Select Bike Model:", df_bike["Bike_Model"].unique())
         with col4:
-            if namee==None:
+            if namee is None:
                 selected_staff = st.selectbox("Salesperson:", df_staff["Sales_Person"].unique())
             else:
-                selected_staff = st.selectbox("Salesperson:", namee)
-        
+                selected_staff = namee
+
         submitted = st.form_submit_button("Generate Quotation")
 
     if submitted:
-        if phone_number:
-            if len(phone_number) == 10 and phone_number.isdigit():
-                st.success("Valid phone number entered.")
-            else:
-                st.error("Please enter a valid 10-digit phone number.")
+        if not phone_number or len(phone_number) != 10 or not phone_number.isdigit():
+            st.error("Please enter a valid 10-digit phone number.")
+            return
         else:
-            st.warning("Phone number cannot be empty.")
+            st.success("Valid phone number entered.")
+
         selected_staff_phone = df_staff[df_staff["Sales_Person"] == selected_staff]["Phone_Number"].iloc[0]
         df_cust = pd.DataFrame(list(cust.find({}, {"_id": 0})))
         bike_row = df_bike[df_bike["Bike_Model"] == selected_bike].iloc[0]
+
+        # Price breakdown
         ex_showroom = float(bike_row.get("Ex_showroom", 0))
         insurance = float(bike_row.get("Insurance", 0))
         registration = float(bike_row.get("Road_tax", 0))
@@ -95,16 +91,14 @@ def app(name=None,add=None):
                 days_difference = 0
 
             if days_difference > 30:
-                out = {
+                cust.update_one({"Phone_no": phone_number}, {"$set": {
                     "Customer_name": customer_name,
-                    "Phone_no": phone_number,
                     "Bike_Model": selected_bike,
                     "Address": address,
                     "Status": "Not Sale",
                     "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
                     "Sales_person": selected_staff
-                }
-                cust.update_one({"Phone_no": phone_number}, {"$set": out})
+                }})
                 st.success("📅 New quotation inserted (more than 30 days old).")
             else:
                 existing_bike_model = customer_record["Bike_Model"].iloc[0]
@@ -114,107 +108,43 @@ def app(name=None,add=None):
                 else:
                     updated_bikes = existing_bike_model
 
-                update_fields = {
+                cust.update_one({"Phone_no": phone_number}, {"$set": {
                     "Customer_name": customer_name,
                     "Bike_Model": updated_bikes,
                     "Address": address,
                     "Status": "Not Sale",
-                    "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
-                }
-                cust.update_one({"Phone_no": phone_number}, {"$set": update_fields})
+                    "Quotation_Date": datetime.combine(current_date, datetime.min.time())
+                }})
                 st.info("ℹ️ Customer detail has been updated successfully.")
 
-        class PDF(FPDF):            
+        class PDF(FPDF):
             def header(self):
-                if add==None:
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '144/1, Tirupparankunram Rd,', ln=True, align='C')
-                    self.cell(0, 5, 'Palangantham, Madurai - 625003.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="ho":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '144/1, Tirupparankunram Rd,', ln=True, align='C')
-                    self.cell(0, 5, 'Palangantham, Madurai - 625003.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="kmr":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
+                self.image("images.png", 10, 8, 33)
+                self.set_font('Arial', 'B', 18)
+                self.cell(0, 9, '', ln=True, align='C')
+                self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                self.set_font('Arial', 'B', 12)
+                if add == "kmr":
                     self.cell(0, 5, '109, Kamarajar Salai,', ln=True, align='C')
                     self.cell(0, 5, 'Madurai - 625009.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="tnr":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
+                elif add == "tnr":
                     self.cell(0, 5, '74, GST Road, Tiruparankundram,', ln=True, align='C')
                     self.cell(0, 5, 'Madurai - 625006.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="nmp":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '74,Theni Main Road, Nagamalai Pudukottai,', ln=True, align='C')
+                elif add == "nmp":
+                    self.cell(0, 5, '74, Theni Main Road, Nagamalai Pudukottai,', ln=True, align='C')
                     self.cell(0, 5, 'Madurai - 625019.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="ckm":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '74,Theni Main Road, Nagamalai Pudukottai,', ln=True, align='C')
-                    self.cell(0, 5, 'Madurai - 625019.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="tmg":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '304,Virudhunagar Road, Thirumangalam,', ln=True, align='C')
+                elif add == "tmg":
+                    self.cell(0, 5, '304, Virudhunagar Road, Thirumangalam,', ln=True, align='C')
                     self.cell(0, 5, 'Madurai - 625706.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-                if add=="klk":
-                    self.image("images.png", 10, 8, 33)
-                    self.set_font('Arial', 'B', 18)
-                    self.cell(0, 9, '', ln=True, align='C')
-                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                    self.set_font('Arial', 'B', 12)
-                    self.cell(0, 5, '6/544G,T.Kallupatti Road, Kalligudi', ln=True, align='C')
+                elif add == "klk":
+                    self.cell(0, 5, '6/544G, T.Kallupatti Road, Kalligudi,', ln=True, align='C')
                     self.cell(0, 5, 'Madurai - 625706.', ln=True, align='C')
-                    self.cell(0, 5, '', ln=True, align='C')
-                    self.set_font('Arial', 'B', 16)
-                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
-
+                else:
+                    self.cell(0, 5, '144/1, Tirupparankunram Rd,', ln=True, align='C')
+                    self.cell(0, 5, 'Palangantham, Madurai - 625003.', ln=True, align='C')
+                self.cell(0, 5, '', ln=True, align='C')
+                self.set_font('Arial', 'B', 16)
+                self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
 
             def footer(self):
                 self.set_y(-42)
@@ -230,11 +160,10 @@ def app(name=None,add=None):
                 self.image("upi.jpg", x + 2, y + 6, 15, 15)
                 self.set_xy(x + 20, y + 3)
                 self.set_font("Arial", '', 12)
-                self.multi_cell(
-                    0, 5,
-                    "   For NEFT/RTGS/BANK TRANSFERS       |            Name: Jeevan Auto Motor Pvt Ltd,\n"
-                    "   Bank: HDFC BANK LTD                             |            Branch: ANDALPURAM\n"
-                    "   A/C No: 50200083068012                          |            IFSC Code: HDFC0003734"
+                self.multi_cell(0, 5,
+                    "   For NEFT/RTGS/BANK TRANSFERS       | Name: Jeevan Auto Motor Pvt Ltd,\n"
+                    "   Bank: HDFC BANK LTD                             | Branch: ANDALPURAM\n"
+                    "   A/C No: 50200083068012                          | IFSC Code: HDFC0003734"
                 )
                 self.set_xy(x + 2, y + h - 6)
                 self.set_font("Arial", 'I', 15)
@@ -244,16 +173,18 @@ def app(name=None,add=None):
         pdf.add_page()
         pdf.set_font("Arial", size=12)
         pdf.cell(100, 10, f"Customer Name: {customer_name}", ln=False)
-        pdf.cell(0, 10, f"       Phone Number: {phone_number}", ln=True, align="R")
-        pdf.multi_cell(0, 10, f"Address: {address}", align="L")
-        pdf.cell(100, 10, f"Sales Person : {selected_staff}", ln=False)
-        pdf.cell(0, 10, f"Sales Person Phone Number: {selected_staff_phone}", ln=True, align="R")
+        pdf.cell(0, 10, f"Phone Number: {phone_number}", ln=True, align="R")
+        pdf.multi_cell(0, 10, f"Address: {address}")
+        pdf.cell(100, 10, f"Sales Person: {selected_staff}", ln=False)
+        pdf.cell(0, 10, f"Phone: {selected_staff_phone}", ln=True, align="R")
 
         pdf.ln(10)
         pdf.set_font("Arial", 'B', 20)
         pdf.cell(0, 10, "Quotation Details", ln=True, align="C")
         pdf.cell(0, 10, f"Bike Model: {selected_bike}", ln=True, align="C")
 
+        pdf.set_x(13)
+        pdf.set_font("Arial", 'B', 12)
         pdf.set_x(13)
         pdf.set_font("Arial", 'B', 12)
         pdf.cell(90, 10, "Ex-Showroom Price", border=1)
@@ -280,28 +211,22 @@ def app(name=None,add=None):
         pdf.cell(90, 10, "Total Price", border=1)
         pdf.cell(90, 10, f"Rs {total_price:.2f}", border=1, ln=True, align="R")
 
+        pdf.ln(10)
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, '', ln=True)
-        
         pdf.cell(0, 10, 'Terms and Conditions:', ln=True)
-        pdf.cell(0, 10, '', ln=True)
-        
         pdf.set_font("Arial", size=10)
-        pdf.multi_cell(0, 8, 
+        pdf.multi_cell(0, 8,
             '1. Above rates are inclusive of Applicable Taxes. Prices prevailing at the time of delivery will be APPLICABLE.\n'
-            '2. DD/Cheque/Payorder should be drawn in favour of m/s Jeevan Auto Motor Pvt Ltd., payable at Madurai.\n'
-            '3. Kindly bring a proof of Aadhar, Pan, Driving License, Ration smart card, and 3 passport size photos.\n'
+            '2. DD/Cheque/Payorder should be drawn in favour of M/s Jeevan Auto Motor Pvt Ltd., payable at Madurai.\n'
+            '3. Kindly bring proof of Aadhar, PAN, DL, Ration card, and 3 passport size photos.\n'
             '4. Delivery only after realization of cheque.')
 
         pdf_output = pdf.output(dest='S').encode('latin-1')
         pdf_buffer = BytesIO(pdf_output)
 
-        pdf_base64 = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
-        pdf_data_uri = f"data:application/pdf;base64,{pdf_base64}"
-
         st.download_button("📄 Download Quotation", data=pdf_buffer, file_name=f"{customer_name}_quotation.pdf", mime="application/pdf")
         st.subheader("📑 Preview Quotation")
-        st.markdown(f'<iframe src="{pdf_data_uri}" width="700" height="500"></iframe>', unsafe_allow_html=True)
+        st.markdown(f'<iframe src="data:application/pdf;base64,{base64.b64encode(pdf_buffer.getvalue()).decode()}" width="100%" height="600px"></iframe>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
