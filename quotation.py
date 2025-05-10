@@ -6,8 +6,9 @@ from io import BytesIO
 import base64
 from datetime import date, datetime
 
-def app(name=None):
+def app(name=None,add=None):
     namee=name
+    add=add
         
     # Streamlit Page Config
     
@@ -116,18 +117,86 @@ def app(name=None):
                 cust.update_one({"Phone_no": phone_number}, {"$set": update_fields})
                 st.info("ℹ️ Customer detail has been updated successfully.")
 
-        class PDF(FPDF):
+        class PDF(FPDF):            
             def header(self):
-                self.image("images.png", 10, 8, 33)
-                self.set_font('Arial', 'B', 18)
-                self.cell(0, 9, '', ln=True, align='C')
-                self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
-                self.set_font('Arial', 'B', 12)
-                self.cell(0, 5, '144/1, Tirupparankunram Rd,', ln=True, align='C')
-                self.cell(0, 5, 'Palangantham, Madurai - 625003.', ln=True, align='C')
-                self.cell(0, 5, '', ln=True, align='C')
-                self.set_font('Arial', 'B', 16)
-                self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="ho":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '144/1, Tirupparankunram Rd,', ln=True, align='C')
+                    self.cell(0, 5, 'Palangantham, Madurai - 625003.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="kmr":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '109, Kamarajar Salai,', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625009.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="tnr":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '74, GST Road, Tiruparankundram,', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625006.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="nmp":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '74,Theni Main Road, Nagamalai Pudukottai,', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625019.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="ckm":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '74,Theni Main Road, Nagamalai Pudukottai,', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625019.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="tmg":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '304,Virudhunagar Road, Thirumangalam,', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625706.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+                if add=="klk":
+                    self.image("images.png", 10, 8, 33)
+                    self.set_font('Arial', 'B', 18)
+                    self.cell(0, 9, '', ln=True, align='C')
+                    self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                    self.set_font('Arial', 'B', 12)
+                    self.cell(0, 5, '6/544G,T.Kallupatti Road, Kalligudi', ln=True, align='C')
+                    self.cell(0, 5, 'Madurai - 625706.', ln=True, align='C')
+                    self.cell(0, 5, '', ln=True, align='C')
+                    self.set_font('Arial', 'B', 16)
+                    self.cell(0, 5, f'Date : {current_date}', ln=True, align='R')
+
 
             def footer(self):
                 self.set_y(-42)
@@ -167,31 +236,31 @@ def app(name=None):
         pdf.cell(0, 10, "Quotation Details", ln=True, align="C")
         pdf.cell(0, 10, f"Bike Model: {selected_bike}", ln=True, align="C")
 
-        pdf.set_x(35)
+        pdf.set_x(13)
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(70, 10, "Ex-Showroom Price", border=1)
-        pdf.cell(70, 10, f"Rs {ex_showroom:.2f}", border=1, ln=True, align="C")
+        pdf.cell(90, 10, "Ex-Showroom Price", border=1)
+        pdf.cell(90, 10, f"Rs {ex_showroom:.2f}", border=1, ln=True, align="R")
 
-        pdf.set_x(35)
-        pdf.cell(70, 10, "Insurance", border=1)
-        pdf.cell(70, 10, f"Rs {insurance:.2f}", border=1, ln=True, align="C")
+        pdf.set_x(13)
+        pdf.cell(90, 10, "Insurance", border=1)
+        pdf.cell(90, 10, f"Rs {insurance:.2f}", border=1, ln=True, align="R")
 
-        pdf.set_x(35)
-        pdf.cell(70, 10, "Registration Charges", border=1)
-        pdf.cell(70, 10, f"Rs {registration:.2f}", border=1, ln=True, align="C")
+        pdf.set_x(13)
+        pdf.cell(90, 10, "Registration Charges", border=1)
+        pdf.cell(90, 10, f"Rs {registration:.2f}", border=1, ln=True, align="R")
 
-        pdf.set_x(35)
-        pdf.cell(70, 10, "Accessories", border=1)
-        pdf.cell(70, 10, f"Rs {accessories:.2f}", border=1, ln=True, align="C")
+        pdf.set_x(13)
+        pdf.cell(90, 10, "Accessories", border=1)
+        pdf.cell(90, 10, f"Rs {accessories:.2f}", border=1, ln=True, align="R")
 
-        pdf.set_x(35)
-        pdf.cell(70, 10, "Warranty", border=1)
-        pdf.cell(70, 10, f"Rs {warranty:.2f}", border=1, ln=True, align="C")
+        pdf.set_x(13)
+        pdf.cell(90, 10, "Warranty", border=1)
+        pdf.cell(90, 10, f"Rs {warranty:.2f}", border=1, ln=True, align="R")
 
-        pdf.set_x(35)
+        pdf.set_x(13)
         pdf.set_font("Arial", 'B', 16)
-        pdf.cell(70, 10, "Total Price", border=1)
-        pdf.cell(70, 10, f"Rs {total_price:.2f}", border=1, ln=True, align="C")
+        pdf.cell(90, 10, "Total Price", border=1)
+        pdf.cell(90, 10, f"Rs {total_price:.2f}", border=1, ln=True, align="R")
 
         pdf.set_font("Arial", 'B', 14)
         pdf.cell(0, 10, '', ln=True)

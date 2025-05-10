@@ -35,19 +35,19 @@ if st.session_state.logged_in:
     if st.session_state.username=="admin":
         admin.app()  # Show the page manager
     if st.session_state.username=="ho":
-        person.app(name=["Santhana Revathi","Usha","Pavithra J","Muthukumar M"])
+        person.app(name=["Santhana Revathi","Usha","Pavithra J","Muthukumar M"],add="ho")
     if st.session_state.username=="kmr":
-        person.app(name=["Harini"])
+        person.app(name=["Harini"],add="kmr")
     if st.session_state.username=="tnr":
-        person.app(name=["Karthikeyan G"])
+        person.app(name=["Karthikeyan G"],add="tnr")
     if st.session_state.username=="nmp":
-        person.app(name=["Manoj"])
+        person.app(name=["Manoj"],add="nmp")
     if st.session_state.username=="ckm":
-        person.app(name=["Nivageetha"])
+        person.app(name=["Nivageetha"],add="ckm")
     if st.session_state.username=="tmg":
-        person.app(name=["Sundari","Pavithra S","Vinothini"])
+        person.app(name=["Sundari","Pavithra S","Vinothini"],add="tmg")
     if st.session_state.username=="klk":
-        person.app(name=["Kannan Prabhu"])
+        person.app(name=["Kannan Prabhu"],add="klk")
     
 
         

@@ -9,8 +9,9 @@ import report
 import sale_entry
 import staff_name
 
-def app(name=None):
+def app(name=None,add=None):
     name=name
+    add=add
     st.write(f"Welcome {name}")
     # Optional: check if user is logged in
     if not st.session_state.get("logged_in"):
@@ -31,7 +32,7 @@ def app(name=None):
     elif page == "Add Staff Name":
         staff_name.app()
     elif page == "Generate Quotation":
-        quotation.app(name=name)
+        quotation.app(name=name,add=add)
     elif page == "Report":
         report.app(name=name)
     elif page == "Sale Entry":
