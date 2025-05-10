@@ -42,7 +42,7 @@ def app(name=None):
     if st.button("✅ Mark as Sold"):
         cust.update_one({"Phone_no": ph_no}, {"$set": {"Status": "Sale"}})
         st.success("✅ Sale entry has been successfully entered!")
-        st.experimental_rerun()
+        st.rerun()
 
 
 
