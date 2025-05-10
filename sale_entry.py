@@ -25,25 +25,31 @@ def app(name=None):
 
     # ---- Customer Selection ----
     st.subheader("🔍 Select a Customer")
-    Name = st.selectbox("Customer Name", df_cust["Customer_name"])
-
-    # ---- Display Customer Info ----
-    selected_customer = df_cust[df_cust["Customer_name"] == Name].iloc[0]
-    ph_no = selected_customer["Phone_no"]
-    add = selected_customer["Address"]
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.info(f"📞 **Phone Number:** {ph_no}")
-    with col2:
-        st.info(f"🏠 **Address:** {add}")
-
-    # ---- Update Button ----
-    st.markdown("---")
-    if st.button("✅ Mark as Sold"):
-        cust.update_one({"Phone_no": ph_no}, {"$set": {"Status": "Sale"}})
-        st.success("✅ Sale entry has been successfully entered!")
-        st.rerun()
+    if len(df_cust)>0:
+        
+        Name = st.selectbox("Customer Name", df_cust["Customer_name"])
+    
+        # ---- Display Customer Info ----
+        selected_customer = df_cust[df_cust["Customer_name"] == Name].iloc[0]
+        ph_no = selected_customer["Phone_no"]
+        add = selected_customer["Address"]
+    
+        
+    
+        col1, col2 = st.columns(2)
+        with col1:
+            st.info(f"📞 **Phone Number:** {ph_no}")
+        with col2:
+            st.info(f"🏠 **Address:** {add}")
+    
+        # ---- Update Button ----
+        st.markdown("---")
+        if st.button("✅ Mark as Sold"):
+            cust.update_one({"Phone_no": ph_no}, {"$set": {"Status": "Sale"}})
+            st.success("✅ Sale entry has been successfully entered!")
+            st.rerun()
+    else:
+        st.warning("")
 
 
 
