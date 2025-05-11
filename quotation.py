@@ -65,9 +65,12 @@ def app(name=None, add=None):
         ex_showroom = float(bike_row.get("Ex_showroom", 0))
         insurance = float(bike_row.get("Insurance", 0))
         registration = float(bike_row.get("Road_tax", 0))
+        sub=insurance+registration
+        sub_tot=ex_showroom+sub
         accessories = float(bike_row.get("Fitting", 0))
         warranty = float(bike_row.get("Warranty", 0))
         total_price = ex_showroom + insurance + registration + accessories + warranty
+        
 
         customer_record = df_cust[df_cust["Phone_no"] == phone_number]
 
@@ -171,6 +174,8 @@ def app(name=None, add=None):
 
         pdf = PDF()
         pdf.add_page()
+
+        # Set font for the initial part of the document
         pdf.set_font("Arial", size=12)
         pdf.cell(100, 10, f"Customer Name: {customer_name}", ln=False)
         pdf.cell(0, 10, f"Phone Number: {phone_number}", ln=True, align="R")
@@ -179,47 +184,61 @@ def app(name=None, add=None):
         pdf.cell(0, 10, f"Phone: {selected_staff_phone}", ln=True, align="R")
 
         pdf.ln(10)
+
+        # Set the font for the heading
         pdf.set_font("Arial", 'B', 20)
         pdf.cell(0, 10, "Proforma Invoice", ln=True, align="C")
         pdf.cell(0, 10, f"Bike Model: {selected_bike}", ln=True, align="C")
 
+        # Set the font for the price details section
+        pdf.set_font("Arial", '', 12)
+
+        # Ex-Showroom Price
         pdf.set_x(13)
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_x(13)
-        pdf.set_font("Arial", 'B', 12)
         pdf.cell(90, 10, "Ex-Showroom Price", border=1)
         pdf.cell(90, 10, f"Rs {ex_showroom:.2f}", border=1, ln=True, align="R")
 
+        # Insurance + Registration
         pdf.set_x(13)
-        pdf.cell(90, 10, "Insurance", border=1)
-        pdf.cell(90, 10, f"Rs {insurance:.2f}", border=1, ln=True, align="R")
+        pdf.cell(90, 10, "Insurance + Registration", border=1)
+        pdf.set_x(103)  # Position the right side for the amount
+        pdf.cell(90, 10, f"Rs {sub:.2f}", border=1, ln=True, align="R")
 
+        # Sub Total
         pdf.set_x(13)
-        pdf.cell(90, 10, "Registration ", border=1)
-        pdf.cell(90, 10, f"Rs {registration:.2f}", border=1, ln=True, align="R")
+        pdf.set_font("Arial", 'B', 12)
+        pdf.cell(90, 10, "Sub Total", border=1)
+        pdf.cell(90, 10, f"Rs {sub_tot:.2f}", border=1, ln=True, align="R")
 
+        # Accessories
         pdf.set_x(13)
+        pdf.set_font("Arial", '', 12)
         pdf.cell(90, 10, "Accessories", border=1)
         pdf.cell(90, 10, f"Rs {accessories:.2f}", border=1, ln=True, align="R")
 
+        # Warranty
         pdf.set_x(13)
         pdf.cell(90, 10, "Warranty", border=1)
         pdf.cell(90, 10, f"Rs {warranty:.2f}", border=1, ln=True, align="R")
 
+        # Total Price
         pdf.set_x(13)
         pdf.set_font("Arial", 'B', 16)
         pdf.cell(90, 10, "Total Price", border=1)
         pdf.cell(90, 10, f"Rs {total_price:.2f}", border=1, ln=True, align="R")
 
         pdf.ln(10)
+
+        # Terms and Conditions Section
         pdf.set_font("Arial", 'B', 14)
         pdf.cell(0, 10, 'Terms and Conditions:', ln=True)
+
         pdf.set_font("Arial", size=10)
         pdf.multi_cell(0, 8,
             '1. Above rates are inclusive of Applicable Taxes. Prices prevailing at the time of delivery will be APPLICABLE.\n'
             '2. DD/Cheque/Payorder should be drawn in favour of M/s Jeevan Auto Motor Pvt Ltd., payable at Madurai.\n'
             '3. Kindly bring proof of Aadhar, PAN, DL, Ration card, and 3 passport size photos.\n'
-            '4. Delivery only after realization of cheque.')
+            '4. Delivery only after realization of Cheque/DD.')
 
         pdf_output = pdf.output(dest='S').encode('latin-1')
         pdf_buffer = BytesIO(pdf_output)
