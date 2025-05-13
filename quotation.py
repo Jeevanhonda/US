@@ -65,10 +65,11 @@ def app(name=None, add=None):
         ex_showroom = float(bike_row.get("Ex_showroom", 0))
         insurance = float(bike_row.get("Insurance", 0))
         registration = float(bike_row.get("Road_tax", 0))
-        sub=insurance+registration
-        sub_tot=ex_showroom+sub
-        accessories = float(bike_row.get("Fitting", 0))
         warranty = float(bike_row.get("Warranty", 0))
+        sub=insurance+registration
+        sub_tot=ex_showroom+sub+warranty
+        accessories = float(bike_row.get("Fitting", 0))
+       
         total_price = ex_showroom + insurance + registration + accessories + warranty
         
 
@@ -203,6 +204,11 @@ def app(name=None, add=None):
         pdf.cell(90, 10, "Insurance + Registration", border=1)
         pdf.set_x(103)  # Position the right side for the amount
         pdf.cell(90, 10, f"Rs {sub:.2f}", border=1, ln=True, align="R")
+        
+         # Warranty
+        pdf.set_x(13)
+        pdf.cell(90, 10, "Warranty", border=1)
+        pdf.cell(90, 10, f"Rs {warranty:.2f}", border=1, ln=True, align="R")
 
         # Sub Total
         pdf.set_x(13)
@@ -216,10 +222,7 @@ def app(name=None, add=None):
         pdf.cell(90, 10, "Accessories", border=1)
         pdf.cell(90, 10, f"Rs {accessories:.2f}", border=1, ln=True, align="R")
 
-        # Warranty
-        pdf.set_x(13)
-        pdf.cell(90, 10, "Warranty", border=1)
-        pdf.cell(90, 10, f"Rs {warranty:.2f}", border=1, ln=True, align="R")
+       
 
         # Total Price
         pdf.set_x(13)
