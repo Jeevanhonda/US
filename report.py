@@ -47,6 +47,7 @@ def app(name=None):
         st.warning("No records found for the selected staff and date range.")
     else:
         st.success(f"Showing records for {staff_name} from {st_date} to {en_date}")
+        filtered_df.index=range(1,len(filtered_df)+1)
         st.dataframe(filtered_df)
 
 
