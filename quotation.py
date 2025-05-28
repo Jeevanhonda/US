@@ -41,12 +41,35 @@ def app(name=None, add=None):
         st.subheader("🔹 Bike and Sales Info")
         col3, col4 = st.columns(2)
         with col3:
+            
+           
+            # Selectbox that triggers rerun
+            
             selected_bike = st.selectbox("Select Bike Model:", df_bike["Bike_Model"].unique())
+            selected_pay_mod = st.selectbox("Select Payment Method:", ["Cash", "Finance"])
+           
+
+           
+
+        
+
+            
+                
+        
+            
         with col4:
             if namee is None:
                 selected_staff = st.selectbox("Salesperson:", df_staff["Sales_Person"].unique())
+                
             else:
                 selected_staff = st.selectbox("Salesperson:", namee)
+            Fin_name=st.text_input("Enter the Finance Name:")
+            
+            
+                
+
+            
+
 
         submitted = st.form_submit_button("Generate Quotation")
 
@@ -83,7 +106,9 @@ def app(name=None, add=None):
                 "Address": address,
                 "Status": "Not Sale",
                 "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
-                "Sales_person": selected_staff
+                "Sales_person": selected_staff,
+                "Payment_method":selected_pay_mod,
+                "Finance_Name":Fin_name
             }
             cust.insert_one(out)
             st.success("✅ Customer detail has been inserted successfully.")
@@ -101,7 +126,9 @@ def app(name=None, add=None):
                     "Address": address,
                     "Status": "Not Sale",
                     "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
-                    "Sales_person": selected_staff
+                    "Sales_person": selected_staff,
+                    "Payment_method":selected_pay_mod,
+                    "Finance_Name":Fin_name
                 }})
                 st.success("📅 New quotation inserted (more than 30 days old).")
             else:
@@ -117,7 +144,9 @@ def app(name=None, add=None):
                     "Bike_Model": updated_bikes,
                     "Address": address,
                     "Status": "Not Sale",
-                    "Quotation_Date": datetime.combine(current_date, datetime.min.time())
+                    "Quotation_Date": datetime.combine(current_date, datetime.min.time()),
+                    "Payment_method":selected_pay_mod,
+                    "Finance_Name":Fin_name
                 }})
                 st.info("ℹ️ Customer detail has been updated successfully.")
 
@@ -201,7 +230,9 @@ def app(name=None, add=None):
 
         # Insurance + Registration
         pdf.set_x(13)
-        pdf.cell(90, 10, "Insurance + Registration", border=1)
+        pdf.set_font("Arial", '', 10)
+        pdf.cell(90, 10, "Insurance(1year od +4year Third Party) + Registration", border=1)
+        pdf.set_font("Arial", '', 12)
         pdf.set_x(103)  # Position the right side for the amount
         pdf.cell(90, 10, f"Rs {sub:.2f}", border=1, ln=True, align="R")
         
