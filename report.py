@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 def app(name=None):
     namee=name
-    st.write(f"Wel {name}")
+    
     # ---- MongoDB connection ----
     conn = pymongo.MongoClient(
         "mongodb://jeevanhonda:Vignesh_3@ac-s8itqus-shard-00-00.ogrtcr1.mongodb.net:27017,ac-s8itqus-shard-00-01.ogrtcr1.mongodb.net:27017,ac-s8itqus-shard-00-02.ogrtcr1.mongodb.net:27017/?ssl=true&replicaSet=atlas-iwwj88-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0"
