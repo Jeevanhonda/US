@@ -155,7 +155,7 @@ def app(name=None, add=None):
                 self.image("images.png", 10, 8, 33)
                 self.set_font('Arial', 'B', 18)
                 self.cell(0, 9, '', ln=True, align='C')
-                self.cell(0, 10, 'Jeevan Auto Moto Pvt Ltd', ln=True, align='C')
+                self.cell(0, 10, 'Jeevan Auto Motor Pvt Ltd', ln=True, align='C')
                 self.set_font('Arial', 'B', 12)
                 if add == "kmr":
                     self.cell(0, 5, '109, Kamarajar Salai,', ln=True, align='C')
